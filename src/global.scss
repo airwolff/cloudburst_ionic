@@ -27,17 +27,12 @@
 
 
 ion-card {
-    border-radius: 18px;
+    border-radius: 10px;
     background: #ffffff;
     box-shadow: 24px 24px 48px #ced1ca,
         -24px -24px 48px #ffffff;
 }
 
-ion-card .login-button {
-    width: 5rem;
-    height: 2rem;
-    font-size: .75rem;
-    border-radius: 6px;
-    background-color: #3880ff;
-    color: #fff;
+.error-message {
+    color: #F20505;
 }

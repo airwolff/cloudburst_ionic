@@ -2,6 +2,7 @@ import { HelperService } from './../providers/helper.service';
 import { LOGIN } from './../constants/formValidationMessage';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-login',
@@ -19,11 +20,18 @@ export class LoginPage implements OnInit {
     };
     validationMessage: any = LOGIN
 
-    constructor(private helperService: HelperService) {}
+    constructor(private helperService: HelperService, private router: Router) {}
 
+
+    // on initialization create forms
     ngOnInit() {
         this.createFormControl();
         this.createForm();
+    }
+
+    // click listener send to signup
+    goToSignupPage() {
+        this.router.navigate(['/signup'])
     }
 
     createFormControl() {
@@ -47,7 +55,6 @@ export class LoginPage implements OnInit {
 
     onFormValueChanged(data) {
     	this.formError = this.helperService.prepareValidationMessage(this.loginForm, this.validationMessage, this.formError);
-    	console.log('====Error', this.formError)
     }
 
 }
