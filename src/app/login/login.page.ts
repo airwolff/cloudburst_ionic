@@ -1,3 +1,4 @@
+import { FirebaseAuthService } from './../providers/firebase-auth.service';
 import { HelperService } from './../providers/helper.service';
 import { LOGIN } from './../constants/formValidationMessage';
 import { Component, OnInit } from '@angular/core';
@@ -19,17 +20,16 @@ export class LoginPage implements OnInit {
         password: ''
     };
     validationMessage: any = LOGIN
+    showLoginSpinner: boolean = false;
 
-    constructor(private helperService: HelperService, private router: Router) {}
+    constructor(private helperService: HelperService, private router: Router, private firebaseAuthService: FirebaseAuthService) {}
 
 
-    // on initialization create forms
     ngOnInit() {
         this.createFormControl();
         this.createForm();
     }
 
-    // click listener send to signup
     goToSignupPage() {
         this.router.navigate(['/signup'])
     }

@@ -1,14 +1,13 @@
 <ion-header>
-  <ion-toolbar>
-  	<ion-buttons slot="start">
-  		<ion-back-button defaultHref="login"></ion-back-button>
-  	</ion-buttons>
-    <ion-title>Signup</ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button defaultHref="login"></ion-back-button>
+        </ion-buttons>
+        <ion-title>Signup</ion-title>
+    </ion-toolbar>
 </ion-header>
-
 <ion-content>
-	<ion-grid fixed>
+    <ion-grid fixed>
         <ion-row class="ion-justify-content-center">
             <ion-col size="12" size-md="6" size-lg="6">
                 <ion-card>
@@ -40,8 +39,9 @@
                             <div class="error-message">
                                 {{formError.password}}
                             </div>
-                            <ion-button expand="full" color="tertiary" class="button ion-margin-top login-button" [disabled]="signupForm.invalid">
+                            <ion-button color="tertiary" expand="block" class="ion-margin-top login-button" [disabled]="signupForm.invalid" (click)="signup()">
                                 Signup
+                                <ion-spinner name="dots" *ngIf="showSignupSpinner"></ion-spinner>
                             </ion-button>
                             <ion-button expand="full" color="light" class="button ion-margin-top signup-button" (click)="goToLoginPage()">
                                 Go to Login

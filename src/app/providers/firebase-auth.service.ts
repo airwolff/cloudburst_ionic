@@ -1,9 +1,22 @@
 import { Injectable } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/auth';
+
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class FirebaseAuthService {
 
-  constructor() { }
+    constructor(private angularFireAuth: AngularFireAuth) {}
+
+    // returns promise
+    async registerWithEmailPassword(email, password) {
+        try {
+            const result = await this.angularFireAuth.auth.createUserWithEmailAndPassword(email, password);
+            await this.angularFireAuth.auth.currentUser.sendEmailVerification();
+            return result;
+        } catch (error) {
+            throw new Error(error);
+        }
+    }
 }
