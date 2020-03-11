@@ -1,6 +1,6 @@
 <ion-header>
     <ion-toolbar>
-        <ion-title>login</ion-title>
+        <ion-title>Login</ion-title>
     </ion-toolbar>
 </ion-header>
 <ion-content>
@@ -40,6 +40,8 @@
                                 <ion-col>
                                     <ion-button expand="block" color="tertiary" class="ion-margin-top" [disabled]="loginForm.invalid" (click)="loginWithEmailPassword()">
                                         Login
+                                        <ion-spinner name="dots" *ngIf="showLoginSpinner">
+                                        </ion-spinner>
                                     </ion-button>
                                 </ion-col>
                             </ion-row>
