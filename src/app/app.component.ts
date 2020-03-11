@@ -1,69 +1,78 @@
-import { Component, OnInit } from '@angular/core';
-
+import { WidgetUtilService } from './providers/widget-util.service';
+import { Component } from '@angular/core';
+import { FirebaseAuthService } from './providers/firebase-auth.service';
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: 'app.component.html',
-  styleUrls: ['app.component.scss']
+    selector: 'app-root',
+    templateUrl: 'app.component.html',
+    styleUrls: ['app.component.scss']
 })
-export class AppComponent implements OnInit {
-  public selectedIndex = 0;
-  public appPages = [
-    {
-      title: 'Inbox',
-      url: '/folder/Inbox',
-      icon: 'mail'
-    },
-    {
-      title: 'Outbox',
-      url: '/folder/Outbox',
-      icon: 'paper-plane'
-    },
-    {
-      title: 'Favorites',
-      url: '/folder/Favorites',
-      icon: 'heart'
-    },
-    {
-      title: 'Archived',
-      url: '/folder/Archived',
-      icon: 'archive'
-    },
-    {
-      title: 'Trash',
-      url: '/folder/Trash',
-      icon: 'trash'
-    },
-    {
-      title: 'Spam',
-      url: '/folder/Spam',
-      icon: 'warning'
+export class AppComponent {
+    public appPages = [{
+            title: 'Home',
+            url: '/home',
+            icon: 'home'
+        },
+        {
+            title: 'Profile',
+            url: '/profile',
+            icon: 'person'
+        },
+    ];
+
+    isLoggedIn: boolean = false;
+
+    constructor(
+        private platform: Platform,
+        private splashScreen: SplashScreen,
+        private statusBar: StatusBar,
+        private firebaseAuthService: FirebaseAuthService,
+        private router: Router,
+        private widgetUtilService: WidgetUtilService
+    ) {
+        this.initializeApp();
     }
-  ];
-  public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
 
-  constructor(
-    private platform: Platform,
-    private splashScreen: SplashScreen,
-    private statusBar: StatusBar
-  ) {
-    this.initializeApp();
-  }
-
-  initializeApp() {
-    this.platform.ready().then(() => {
-      this.statusBar.styleDefault();
-      this.splashScreen.hide();
-    });
-  }
-
-  ngOnInit() {
-    const path = window.location.pathname.split('folder/')[1];
-    if (path !== undefined) {
-      this.selectedIndex = this.appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
+    initializeApp() {
+        this.platform.ready().then(() => {
+            this.statusBar.styleDefault();
+            this.splashScreen.hide();
+        });
+        this.getAuthState();
     }
-  }
+
+    // continually checks authState form firebase-auth.service.ts
+    getAuthState() {
+        this.widgetUtilService.presentLoading();
+        this.firebaseAuthService.getAuthState().subscribe(user => {
+            console.log('user auth state===', user ? user.toJSON() : null);
+            if (user) {
+                this.isLoggedIn = true;
+            } else {
+                this.isLoggedIn = false;
+            }
+            this.handleNavigation();
+            this.widgetUtilService.dismissLoader();
+        }, (error) => {
+            this.widgetUtilService.dismissLoader();
+            this.widgetUtilService.presentToast(error.message);
+        });
+    }
+
+    // this.router.url.split('/')[1] **** split with / is returning without /
+    // automagically sending user to signup or login if they get logged out
+    handleNavigation() {
+        if (this.isLoggedIn) {
+            const currentUrl = this.router.url.split('/')[1];
+            if (currentUrl === 'login' || currentUrl === 'signup') {
+                this.router.navigate(['/home']);
+            }
+        } else {
+            this.router.navigate(['/login']);
+        }
+    }
 }

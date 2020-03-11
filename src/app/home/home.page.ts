@@ -10,7 +10,11 @@ import { Router } from '@angular/router';
 })
 export class HomePage implements OnInit {
 
-    constructor(private firebaseAuthService: FirebaseAuthService, private widgetUtilService: WidgetUtilService, private router: Router) {}
+    constructor(
+        private firebaseAuthService: FirebaseAuthService, 
+        private widgetUtilService: WidgetUtilService, 
+        private router: Router
+        ) {}
 
     ngOnInit() {}
 

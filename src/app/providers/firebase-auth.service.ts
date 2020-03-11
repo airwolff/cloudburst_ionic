@@ -7,9 +7,10 @@ import { AngularFireAuth } from '@angular/fire/auth';
 })
 export class FirebaseAuthService {
 
-    constructor(private angularFireAuth: AngularFireAuth) {}
+    constructor(
+        private angularFireAuth: AngularFireAuth
+        ) {}
 
-    // returns promise
     async registerWithEmailPassword(email, password) {
         try {
             const result = await this.angularFireAuth.auth.createUserWithEmailAndPassword(email, password);
@@ -35,5 +36,10 @@ export class FirebaseAuthService {
         } catch (error) {
             throw new Error(error);
         }
+    }
+
+
+    getAuthState() {
+        return this.angularFireAuth.authState;
     }
 }

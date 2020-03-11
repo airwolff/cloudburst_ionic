@@ -1,14 +1,18 @@
 import { Injectable } from '@angular/core';
-import { ToastController, Platform } from '@ionic/angular';
+import { ToastController, Platform, LoadingController } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WidgetUtilService {
 
-	loading: any = {};
+    loading: any = {};
 
-  constructor(private toastController: ToastController, private platform: Platform) { }
+  constructor(
+    private toastController: ToastController, 
+    private platform: Platform,
+    private loadingController: LoadingController
+    ) { }
 
   async presentToast(message) {
     const toast = await this.toastController.create({
@@ -24,4 +28,18 @@ export class WidgetUtilService {
     });
     toast.present();
   }
+
+  async presentLoading() {
+     this.loading = await this.loadingController.create({
+      spinner: 'crescent',
+      message: 'Loading...',
+      translucent: true
+    });
+    return await this.loading.present();
+  }
+
+  async dismissLoader() {
+    await this.loading.dismiss();
+  }
+
 }

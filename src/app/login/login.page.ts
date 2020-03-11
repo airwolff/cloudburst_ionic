@@ -23,7 +23,12 @@ export class LoginPage implements OnInit {
     validationMessage: any = LOGIN
     showLoginSpinner: boolean = false;
 
-    constructor(private helperService: HelperService, private router: Router, private firebaseAuthService: FirebaseAuthService, private widgetUtilService: WidgetUtilService) {}
+    constructor(
+        private helperService: HelperService, 
+        private router: Router, 
+        private firebaseAuthService: FirebaseAuthService, 
+        private widgetUtilService: WidgetUtilService
+        ) {}
 
 
     ngOnInit() {

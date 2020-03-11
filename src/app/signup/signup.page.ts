@@ -23,7 +23,12 @@ export class SignupPage implements OnInit {
     validationMessage: any = SIGNUP
     showSignupSpinner: boolean = false;
 
-    constructor(private helperService: HelperService, private router: Router, private firebaseAuthService: FirebaseAuthService, private widgetUtilService: WidgetUtilService) {}
+    constructor(
+        private helperService: HelperService, 
+        private router: Router, 
+        private firebaseAuthService: FirebaseAuthService, 
+        private widgetUtilService: WidgetUtilService
+        ) {}
 
     ngOnInit() {
         this.createFormControl();
