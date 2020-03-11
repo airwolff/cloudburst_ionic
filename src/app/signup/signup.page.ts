@@ -30,6 +30,14 @@ export class SignupPage implements OnInit {
         this.createForm();
     }
 
+    resetForm() {
+        this.signupForm.reset();
+        this.formError = {
+            email: '',
+            password: ''
+        };
+    }
+
     async signup() {
         try {
             this.showSignupSpinner = true;
@@ -37,8 +45,8 @@ export class SignupPage implements OnInit {
             console.log('Result: ', result);
             this.showSignupSpinner = false;
             this.widgetUtilService.presentToast('Signup Success! Verification Email Sent...');
-            this.signupForm.reset();
-            this.router.navigate('/home');
+            this.resetForm();
+            this.router.navigate(['/login']);
         } catch (error) {
             console.log('Error: ', error);
             this.showSignupSpinner = false;

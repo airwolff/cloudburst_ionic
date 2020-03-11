@@ -6,6 +6,8 @@ import { ToastController, Platform } from '@ionic/angular';
 })
 export class WidgetUtilService {
 
+	loading: any = {};
+
   constructor(private toastController: ToastController, private platform: Platform) { }
 
   async presentToast(message) {
@@ -13,7 +15,11 @@ export class WidgetUtilService {
       // es6 shorthand for key value matching
       message,
       duration: 2500,
-      showCloseButton: true,
+      buttons: [
+      {
+          text: 'Done',
+          role: 'cancel',}
+      ],
       position: this.platform.is('desktop') ? 'top' : 'bottom'
     });
     toast.present();
