@@ -39,9 +39,15 @@
                             <ion-row>
                                 <ion-col>
                                     <ion-button expand="block" color="tertiary" class="ion-margin-top" [disabled]="loginForm.invalid" (click)="loginWithEmailPassword()">
-                                        Login
+                                        Email Login 
                                         <ion-spinner name="dots" *ngIf="showLoginSpinner">
                                         </ion-spinner>
+                                    </ion-button>
+                                </ion-col>
+                                <ion-col>
+                                    <ion-button expand="block" color="danger" class="ion-margin-top" (click)="googleLoginWeb()">
+                                        <ion-icon name="logo-google"></ion-icon>
+                                        &nbsp;Google Login
                                     </ion-button>
                                 </ion-col>
                             </ion-row>
