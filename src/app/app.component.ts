@@ -75,4 +75,15 @@ export class AppComponent {
             this.router.navigate(['/login']);
         }
     }
+
+        async logout() {
+        try {
+            await this.firebaseAuthService.logout();
+            this.widgetUtilService.presentToast('You have logged out.');
+        } catch (error) {
+            console.log('Error: ', error);
+            this.widgetUtilService.presentToast(error.message)
+        }
+
+    }
 }

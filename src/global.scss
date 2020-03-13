@@ -36,3 +36,14 @@ ion-card {
 .error-message {
     color: #F20505;
 }
+
+.user-avatar {
+	width: 5rem;
+	height: auto;
+}
+
+.page-loader {
+	top: 45%;
+	left: 45%;
+	position: fixed;
+}
