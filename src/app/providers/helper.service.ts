@@ -1,4 +1,4 @@
-// import { Platform } from '@ionic/angular';
+import { Platform } from '@ionic/angular';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -6,7 +6,9 @@ import { Injectable } from '@angular/core';
 })
 export class HelperService {
 
-    constructor() {}
+    constructor(
+        private platform: Platform
+    ) {}
 
     prepareValidationMessage(form, validationMessage, formFields) {
         for (const field in formFields) {
@@ -20,5 +22,9 @@ export class HelperService {
             }
         }
         return formFields;
+    }
+
+    isNativePlatform() {
+        return (this.platform.is('cordova') || this.platform.is('capacitor'));
     }
 }
