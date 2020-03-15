@@ -76,7 +76,7 @@ export class AppComponent {
         }
     }
 
-        async logout() {
+    async logout() {
         try {
             await this.firebaseAuthService.logout();
             this.widgetUtilService.presentToast('You have logged out.');
