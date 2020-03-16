@@ -11,10 +11,10 @@ export class FirestoreDbService {
         private db: AngularFirestore
     ) {}
 
-    // returns observable, valueChanges() only returns object, not unique ID
-    getProductList() {
+    // returns observable, valueChanges() only returns object, not unique ID use argument to get collection dynamically
+    getAllData(collectionId) {
         /* return this.db.collection('product').valueChanges(); */
-        return this.db.collection('product').snapshotChanges().pipe(
+        return this.db.collection(collectionId).snapshotChanges().pipe(
             map(docArray => {
                 return docArray.map(doc => {
                     console.log('id ==', doc.payload.doc.id);
@@ -31,5 +31,16 @@ export class FirestoreDbService {
                 })
             })
         )
+    }
+
+// will be expecting collectionId as an argument and use second argument to represent the information you want to insert
+    async insertData(collectionId, data) {
+        try {
+            const result = await this.db.collection(collectionId).add(data);
+            return result;
+        } catch (error) {
+            throw new Error(error);
+        }
+        
     }
 }

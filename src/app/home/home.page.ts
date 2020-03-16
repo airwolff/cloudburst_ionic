@@ -37,10 +37,10 @@ export class HomePage implements OnInit {
         }
     }
 
-    // define event as parameter and if this is not sent initialize with null
+    // define event as parameter and if this is not sent initialize with null. get collection you need by putting collection name as argument to getAllData method
     getProductList(event = null) {
         this.productAvailable = false;
-        this.firestoreDbService.getProductList().subscribe(result => {
+        this.firestoreDbService.getAllData('product').subscribe(result => {
             console.log('result: ', result);
             this.productList = result;
             this.productAvailable = true;
@@ -62,5 +62,9 @@ export class HomePage implements OnInit {
     // pass event object to getProductList method
     doRefresh(event) {
         this.getProductList(event)
+    }
+
+    openAddProductPage() {
+        this.router.navigate(['/add-product']);
     }
 }
