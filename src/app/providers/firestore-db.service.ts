@@ -13,7 +13,7 @@ export class FirestoreDbService {
 
     // returns observable, valueChanges() only returns object, not unique ID use argument to get collection dynamically
     getAllData(collectionId) {
-        /* return this.db.collection('product').valueChanges(); */
+        // return this.db.collection('product').valueChanges();
         return this.db.collection(collectionId).snapshotChanges().pipe(
             map(docArray => {
                 return docArray.map(doc => {
@@ -21,7 +21,7 @@ export class FirestoreDbService {
                     console.log('data ==', doc.payload.doc.data());
                     console.log('spread ==', {
                         id: doc.payload.doc.id,
-                        ...doc.payload.doc.data() 
+                        ...doc.payload.doc.data()
                     });
                     return {
                         id: doc.payload.doc.id,
@@ -33,7 +33,7 @@ export class FirestoreDbService {
         )
     }
 
-// will be expecting collectionId as an argument and use second argument to represent the information you want to insert
+    // will be expecting collectionId as an argument and use second argument to represent the information you want to insert
     async insertData(collectionId, data) {
         try {
             const result = await this.db.collection(collectionId).add(data);
@@ -41,6 +41,21 @@ export class FirestoreDbService {
         } catch (error) {
             throw new Error(error);
         }
-        
+
+    }
+
+    // expecting collectionId and docId
+    async getDataById(collectionId, docId) {
+        try {
+            const result = await this.db.collection(collectionId).doc(docId).ref.get();
+            // will return exists property which will be either true or false
+            if (result.exists) {
+                return result.data();
+            } else {
+                throw new Error('Data not found with give ID')
+            }
+        } catch (error) {
+            throw new Error(error);
+        }
     }
 }

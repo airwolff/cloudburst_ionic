@@ -52,6 +52,11 @@ export class HomePage implements OnInit {
         });
     }
 
+    // since id argument is being used as a path parameter it must be declared in the routing file
+    openProductDetailPage(id) {
+        this.router.navigate(['/product-detail', id]);
+    }
+
     // receives event object
     handleRefresher(event) {
         if (event) {

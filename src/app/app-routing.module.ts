@@ -32,6 +32,11 @@ const routes: Routes = [
   {
     path: 'add-product',
     loadChildren: () => import('./add-product/add-product.module').then( m => m.AddProductPageModule)
+  },
+  {
+    // declare path parameter from home.page.ts to get specific product page
+    path: 'product-detail/:id',
+    loadChildren: () => import('./product-detail/product-detail.module').then( m => m.ProductDetailPageModule)
   }
 ];
 
