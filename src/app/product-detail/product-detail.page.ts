@@ -1,8 +1,10 @@
-import { HelperService } from './../providers/helper.service';
 import { WidgetUtilService } from '../providers/widget-util.service';
 import { FirestoreDbService } from './../providers/firestore-db.service';
+import { HelperService } from './../providers/helper.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { EDITPRODUCT } from '../constants/formValidationMessage';
 
 @Component({
   selector: 'app-product-detail',
@@ -16,6 +18,22 @@ export class ProductDetailPage implements OnInit {
   productDetail: any = {};
   // declaring array for ngFor to iterate over on html
   productDetailList: Array<any> = [];
+  // initally hide the edit form
+  showEditProductForm: boolean = false;
+  editProductForm: FormGroup;
+    name: FormControl;
+    price: FormControl;
+    brand: FormControl;
+    size: FormControl;
+    formError: any = {
+        name: '',
+        price: '',
+        brand: '',
+        size: ''
+    };
+
+    validationMessage: any = EDITPRODUCT;
+    showEditProductSpinner: boolean = false;
 
   constructor(
   	private activatedRoute: ActivatedRoute,
@@ -32,7 +50,19 @@ export class ProductDetailPage implements OnInit {
   	});
   }
 
+    resetForm() {
+    this.editProductForm.reset();
+    this.formError = {
+      name: '',
+      price: '',
+      brand: '',
+      size: ''
+    };
+  }
+
   ngOnInit() {
+    this.createFormControl();
+    this.createForm();
   }
 
   async getProductDetail() {
@@ -57,5 +87,47 @@ export class ProductDetailPage implements OnInit {
   	}
     this.productDetailAvailable = true;
   }
+
+  openEditProductForm() {
+    this.resetForm();
+    this.showEditProductForm = true;
+    for (const key in this.editProductForm.controls) {
+      console.log('!!!: ', key);
+      this.editProductForm.controls[key].setValue(this.productDetail[key]);
+    }
+  }
+
+  cancelEdit() {
+    this.showEditProductForm = false;
+  }
+
+  createFormControl() {
+        this.name = new FormControl('', [
+            Validators.required
+        ]);
+        this.price = new FormControl('', [
+            Validators.required
+        ]);
+        this.brand = new FormControl('', [
+            Validators.required
+        ]);
+        this.size = new FormControl('', [
+            Validators.required
+        ]);
+    }
+
+    createForm() {
+        this.editProductForm = new FormGroup({
+            name: this.name,
+            price: this.price,
+            size: this.size,
+            brand: this.brand
+        });
+        this.editProductForm.valueChanges.subscribe(data => this.onFormValueChanged(data));
+    }
+
+    onFormValueChanged(data) {
+        this.formError = this.helperService.prepareValidationMessage(this.editProductForm, this.validationMessage, this.formError);
+    }
 
 }
