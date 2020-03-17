@@ -34,6 +34,7 @@ export class ProductDetailPage implements OnInit {
 
     validationMessage: any = EDITPRODUCT;
     showEditProductSpinner: boolean = false;
+    showDeleteProductSpinner: boolean = false;
 
   constructor(
   	private activatedRoute: ActivatedRoute,
@@ -63,6 +64,32 @@ export class ProductDetailPage implements OnInit {
   ngOnInit() {
     this.createFormControl();
     this.createForm();
+  }
+
+// dirty means field has been manipulated so you only get fields that have changed
+  async updateProduct() {
+    try {
+      this.showEditProductSpinner = true;
+      const updatedProductDetails = {};
+      for (const formField in this.editProductForm.controls) {
+        const control = this.editProductForm.controls[formField];
+        if (control.dirty) {
+          console.log('Control!!', control);
+          // access value from form control through control.value
+          updatedProductDetails[formField] = control.value;
+        }
+      }
+      console.log('updatedProductDetails: ', updatedProductDetails);
+      await this.firestoreDbService.updateData('product', this.productId, updatedProductDetails);
+      await this.getProductDetail();
+      await this.openEditProductForm();
+      this.widgetUtilService.presentToast('Product Updated Successfully');
+      this.showEditProductSpinner = false;
+      this.showEditProductForm = false;
+    } catch (error) {
+      this.widgetUtilService.presentToast(error.message);
+      this.showEditProductSpinner = false;
+    }
   }
 
   async getProductDetail() {
@@ -99,6 +126,35 @@ export class ProductDetailPage implements OnInit {
 
   cancelEdit() {
     this.showEditProductForm = false;
+  }
+
+  deleteProduct() {
+    this.widgetUtilService.presentAlertConfirm(
+      'Delete Product?',
+      `Are you sure you want to delete ${this.productDetail.name}`,
+      [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: (blah) => {
+          }
+        }, {
+          text: 'Okay',
+          handler: async () => {
+            try {
+              this.showDeleteProductSpinner = true;
+              await this.firestoreDbService.deleteData('product', this.productId);
+              this.widgetUtilService.presentToast('Product Deleted');
+              this.router.navigate(['/home']);
+              this.showDeleteProductSpinner = false;
+            } catch (error) {
+              this.widgetUtilService.presentToast(error.message);
+              this.showDeleteProductSpinner = false;
+            }
+            
+          }
+        }
+      ])
   }
 
   createFormControl() {

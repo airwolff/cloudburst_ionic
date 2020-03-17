@@ -4,6 +4,7 @@ import { HelperService } from './../providers/helper.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ADDPRODUCT } from '../constants/formValidationMessage';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-add-product',
@@ -31,7 +32,8 @@ export class AddProductPage implements OnInit {
     constructor(
         private helperService: HelperService,
         private firestoreDbService: FirestoreDbService,
-        private widgetUtilService: WidgetUtilService
+        private widgetUtilService: WidgetUtilService,
+        private router: Router
         ) {}
 
     ngOnInit() {
@@ -61,6 +63,7 @@ export class AddProductPage implements OnInit {
             this.showAddProductSpinner = false;
             this.widgetUtilService.presentToast('Product added successfully');
             this.resetForm();
+            this.router.navigate(['/home']);
         } catch (error) {
             console.log(error);
             this.widgetUtilService.presentToast(error.message);
