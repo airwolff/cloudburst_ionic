@@ -39,9 +39,9 @@ export class WidgetUtilService {
     return await this.loading.present();
   }
 
-  async dismissLoader() {
-    await this.loading.dismiss();
-  }
+  // async dismissLoader() {
+  //   await this.loading.dismiss();
+  // }
 
   async presentAlertConfirm(header, message, buttons) {
     const alert = await this.alertController.create({

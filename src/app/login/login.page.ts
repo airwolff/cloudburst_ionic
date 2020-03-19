@@ -50,10 +50,10 @@ export class LoginPage implements OnInit {
             await this.firebaseAuthService.nativeGoogleLogin();
             this.widgetUtilService.presentToast('Login Success');
             this.router.navigate(['/home']);
-            this.widgetUtilService.dismissLoader();
+            // this.widgetUtilService.dismissLoader();
         } catch (error) {
             this.widgetUtilService.presentToast('Something Went Wrong');
-            this.widgetUtilService.dismissLoader();
+            // this.widgetUtilService.dismissLoader();
         }
     }
 
